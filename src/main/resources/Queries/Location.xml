@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries>
+    <query>
+        <id>1</id>
+        <description>Fetch all locations from the database</description>
+        <sql>SELECT * FROM location;</sql>
+    </query>
+</queries>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+    <named-native-query name="OptDao.validateOtp">
+        <query>
+            <![CDATA[
+            select count(1)
+            from tb_otp
+            where ip_address = :ipAddress
+              and start_date <= DATEADD(MINUTE, -3, :currenDate)
+              and FORMAT(end_date, 'yyyy-MM-dd HH:mm:ss')  >= :currenDate
+              and otp = :otpValue
+              and is_used = 0
+            ]]>
+        </query>
+    </named-native-query>
+</entity-mappings>

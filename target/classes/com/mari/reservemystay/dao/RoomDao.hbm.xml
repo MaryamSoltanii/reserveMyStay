@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+    <named-native-query name="RoomDao.loadByHotelId">
+        <query>
+            select r.id, htl.name HotelName, r_type.name RoomType, r.capacity, r.price
+            from tb_room r
+                     join tb_hotel htl on htl.id = r.fk_htl
+                     join tb_common_data r_type on r_type.id = r.fk_cod
+            where r.id = :roomId
+        </query>
+    </named-native-query>
+    <named-native-query name="RoomDao.findRoomsByHotelId">
+        <query>
+            select r.id, htl.name HotelName, r_type.name RoomType, r.capacity, r.price
+            from tb_room r
+                     join tb_hotel htl on htl.id = r.fk_htl
+                     join tb_common_data r_type on r_type.id = r.fk_cod
+            where htl.id = :hotelId
+        </query>
+    </named-native-query>
+</entity-mappings>

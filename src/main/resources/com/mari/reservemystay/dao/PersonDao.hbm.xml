@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+    <named-native-query name="PersonDao.checkPersonIdByMobileNo">
+        <query>
+            <![CDATA[
+            select count(1) from tb_person
+            where mobile_no = :mobileNo
+            ]]>
+        </query>
+    </named-native-query>
+    <named-native-query name="PersonDao.findPersonIdByMobileNo">
+        <query>
+            <![CDATA[
+            select id from tb_person
+            where mobile_no = :mobileNo
+            ]]>
+        </query>
+    </named-native-query>
+</entity-mappings>
