@@ -19,7 +19,7 @@ public class HotelAttribute {
     private Long id;
 
     @ManyToOne
-    @Column(name = "fk_htl")
+    @JoinColumn(name = "fk_htl")
     private Hotel fk_htl;
 
     @ManyToOne

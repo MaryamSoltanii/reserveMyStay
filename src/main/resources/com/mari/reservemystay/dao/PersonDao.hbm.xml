@@ -20,4 +20,12 @@
             ]]>
         </query>
     </named-native-query>
+    <named-native-query name="PersonDao.findPersonIdByNationalCode">
+        <query>
+            <![CDATA[
+            select id from tb_person
+            where nationalcode = :NationalCode
+            ]]>
+        </query>
+    </named-native-query>
 </entity-mappings>

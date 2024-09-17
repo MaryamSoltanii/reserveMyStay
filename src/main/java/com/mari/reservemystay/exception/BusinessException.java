@@ -30,5 +30,6 @@ public class BusinessException extends RuntimeException {
     public static final String HOA_HTL_NOT_FOUND = "hoa.htl.not.found";
     public static final String HTL_LOC_NOT_FOUND = "htl.loc.not.found";
     public static final String HTL_NOT_FOUND = "htl.not.found";
-    public static final String ROM_HTL_NOT_FOUND = "rom.htl.not.found";
+    public static final String UNKNOWN_ERROR = "unknown.error";
+
 }

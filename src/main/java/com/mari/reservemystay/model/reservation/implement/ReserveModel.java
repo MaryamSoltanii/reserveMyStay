@@ -13,7 +13,6 @@ public class ReserveModel {
 
     private Long id;
     private Long roomId;
-    private Long prsId;
     private Date fromDate;
     private Date toDate;
     private Integer isCancel;

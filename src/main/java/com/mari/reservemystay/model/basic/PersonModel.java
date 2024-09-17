@@ -11,13 +11,12 @@ import java.util.Date;
 @Builder
 public class PersonModel {
     private Long id;
-
     private String nationalCode;
     private String firstname;
     private String lastname;
     private String passportNo;
     private String fatherName;
     private Date birthdate;
-    private Long gender;
+    private Integer gender;
     private String mobileNo;
 }

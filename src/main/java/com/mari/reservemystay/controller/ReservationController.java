@@ -1,6 +1,7 @@
 package com.mari.reservemystay.controller;
 
 import com.mari.reservemystay.exception.BusinessException;
+import com.mari.reservemystay.model.reservation.implement.ReservationModel;
 import com.mari.reservemystay.model.reservation.implement.ReserveModel;
 import com.mari.reservemystay.services.reservation.implement.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class ReservationController {
     private ReserveService service;
 
     @PostMapping("/reserve")
-    private ResponseEntity<Long> save(@RequestBody ReserveModel model) {
+    private ResponseEntity<Long> save(@RequestBody ReservationModel model) {
         try {
             return ResponseEntity.ok(service.save(model));
         } catch (BusinessException e) {

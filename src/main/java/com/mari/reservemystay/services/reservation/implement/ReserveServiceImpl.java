@@ -2,10 +2,16 @@ package com.mari.reservemystay.services.reservation.implement;
 
 import com.mari.reservemystay.dao.PersonDao;
 import com.mari.reservemystay.dao.ReserveDao;
+import com.mari.reservemystay.dao.ReserveDetailDao;
 import com.mari.reservemystay.dao.RoomDao;
+import com.mari.reservemystay.domain.Person;
 import com.mari.reservemystay.domain.Reserve;
+import com.mari.reservemystay.domain.ReserveDetail;
 import com.mari.reservemystay.exception.BusinessException;
-import com.mari.reservemystay.model.reservation.implement.ReserveModel;
+import com.mari.reservemystay.model.basic.PersonModel;
+import com.mari.reservemystay.model.reservation.implement.Guestslist;
+import com.mari.reservemystay.model.reservation.implement.ReservationModel;
+import com.mari.reservemystay.services.basic.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.mari.reservemystay.exception.BusinessException.*;
@@ -28,6 +36,12 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Autowired
     private RoomDao roomDao;
+
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private ReserveDetailDao reserveDetailDao;
 
     private Long checkRoomAvailability(Long roomId, Date toDate) {
         return reserveDao.countAvailableRooms(roomId, toDate);
@@ -64,28 +78,60 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public Long save(ReserveModel model) {
+    public Long save(ReservationModel model) {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var room = roomDao.findById(model.getRoomId()).orElseThrow(() -> new BusinessException(RES_ROOM_NOT_FOUND_EXCEPTION));
         Long count = checkRoomAvailability(room.getId(), model.getToDate());
         if (count == 0) {
             Reserve reserve = new Reserve();
-            reserve.setIsCancel(model.getIsCancel());
+            reserve.setIsCancel(0);
             reserve.setToDate(model.getToDate());
             reserve.setFromDate(model.getFromDate());
             reserve.setReserveDate(model.getReserveDate());
-            reserve.setIsDelivery(model.getIsDelivery());
             var code = checkCodeUnique();
             reserve.setCode(code);
-            var person = personDao.findById(model.getPrsId()).orElseThrow(() -> new BusinessException((RES_PERSON_NOT_FOUND_EXCEPTION)));
-            reserve.setPersonId(person);
             reserve.setRoomId(room);
             reserveDao.save(reserve);
+
+            List <Guestslist> guests = model.getGuests();
+            for (Guestslist guestslist : guests) {
+                String nationalCode = guestslist.getNationalCode();
+                Long personId = personDao.findByNationalCode(nationalCode);
+                Person personEntity;
+                if (personId == null) {
+                    int genderValue;
+                    if ("female".equalsIgnoreCase(guestslist.getGender())) {
+                        genderValue = 1;
+                    } else {
+                        genderValue = 0;
+                    }
+
+                    PersonModel personModel = PersonModel.builder().birthdate(guestslist.getBirthdate())
+                            .firstname(guestslist.getFirstname())
+                            .lastname(guestslist.getLastname())
+                            .mobileNo(guestslist.getMobileNo())
+                            .fatherName(guestslist.getFatherName())
+                            .passportNo(guestslist.getPassportNo())
+                            .nationalCode(nationalCode)
+                            .gender(genderValue).build();
+                    //todo ask
+                    Long newPersonId = personService.save(personModel);
+                    personEntity = personDao.findById(newPersonId)
+                            .orElseThrow(() -> new BusinessException(RES_PERSON_NOT_FOUND_EXCEPTION));
+                } else {
+                    personEntity = personDao.findById(personId)
+                            .orElseThrow(() -> new BusinessException(RES_PERSON_NOT_FOUND_EXCEPTION));
+                }
+                ReserveDetail reserveDetail = new ReserveDetail();
+                reserveDetail.setPersonId(personEntity);
+                var reserveId = reserveDao.findById(reserve.getId())
+                        .orElseThrow(() -> new BusinessException(UNKNOWN_ERROR));
+                reserveDetail.setReserveId(reserveId);
+            }
             return reserve.getId();
         } else {
             throw new BusinessException(RES_ROOM_RESERVED);
         }
-
     }
 
     public Boolean checkReserveIsCancel(Long reserveId) {
@@ -108,6 +154,5 @@ public class ReserveServiceImpl implements ReserveService {
             return entity.getId();
         }
     }
-
 }
 

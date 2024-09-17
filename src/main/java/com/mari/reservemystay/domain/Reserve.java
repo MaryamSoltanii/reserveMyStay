@@ -23,10 +23,6 @@ public class Reserve {
     @JoinColumn(name = "fk_rom")
     private Room roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_prs")
-    private Person personId;
-
     @Column(name = "from_date")
     private Date fromDate;
 
@@ -54,7 +50,6 @@ public class Reserve {
         if (o == null || getClass() != o.getClass()) return false;
         Reserve reserve = (Reserve) o;
         return Objects.equals(roomId, reserve.roomId)
-                && Objects.equals(personId, reserve.personId)
                 && Objects.equals(fromDate, reserve.fromDate)
                 && Objects.equals(toDate, reserve.toDate)
                 && Objects.equals(isCancel, reserve.isCancel)
@@ -63,7 +58,9 @@ public class Reserve {
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomId, personId, fromDate, toDate, isCancel, isDelivery);
+
+        return Objects.hash(roomId, fromDate, toDate, isCancel, isDelivery);
+
     }
 
 }

@@ -36,7 +36,7 @@ public class Person {
     private Date birthdate;
 
     @Column(name = "gender")
-    private Long gender;
+    private Integer gender;
 
     @Column(name = "mobile_no")
     private String mobileNo;
