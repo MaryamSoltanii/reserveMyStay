@@ -11,6 +11,7 @@ import com.mari.reservemystay.exception.BusinessException;
 import com.mari.reservemystay.model.basic.PersonModel;
 import com.mari.reservemystay.model.reservation.implement.Guestslist;
 import com.mari.reservemystay.model.reservation.implement.ReservationModel;
+import com.mari.reservemystay.model.reservation.implement.ReserveDetailModel;
 import com.mari.reservemystay.services.basic.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,10 @@ public class ReserveServiceImpl implements ReserveService {
     private PersonService personService;
 
     @Autowired
-    private ReserveDetailDao reserveDetailDao;
+    private ReserveDetailService reserveDetailService;
 
+    @Autowired
+    private ReserveDetailDao reserveDetailDao;
     private Long checkRoomAvailability(Long roomId, Date toDate) {
         return reserveDao.countAvailableRooms(roomId, toDate);
     }
@@ -65,8 +68,8 @@ public class ReserveServiceImpl implements ReserveService {
         int attempts = 0;
 
         while (attempts < maxAttempts) {
-            var code2 = UUID.randomUUID().toString().substring(0, 8);
-            var code = generateRandomString(8);
+            var code = UUID.randomUUID().toString().substring(0, 8);
+         //   var code = generateRandomString(8);
             var isCodeUnique = reserveDao.validateUniqueCode(code);
 
             if (isCodeUnique == 0) {
@@ -98,6 +101,7 @@ public class ReserveServiceImpl implements ReserveService {
                 String nationalCode = guestslist.getNationalCode();
                 Long personId = personDao.findByNationalCode(nationalCode);
                 Person personEntity;
+                Long prsId;
                 if (personId == null) {
                     int genderValue;
                     if ("female".equalsIgnoreCase(guestslist.getGender())) {
@@ -115,18 +119,20 @@ public class ReserveServiceImpl implements ReserveService {
                             .nationalCode(nationalCode)
                             .gender(genderValue).build();
                     //todo ask
-                    Long newPersonId = personService.save(personModel);
-                    personEntity = personDao.findById(newPersonId)
+                    prsId = personService.save(personModel);
+                    personEntity = personDao.findById(prsId)
                             .orElseThrow(() -> new BusinessException(RES_PERSON_NOT_FOUND_EXCEPTION));
+
                 } else {
+                    prsId = personId;
                     personEntity = personDao.findById(personId)
                             .orElseThrow(() -> new BusinessException(RES_PERSON_NOT_FOUND_EXCEPTION));
                 }
-                ReserveDetail reserveDetail = new ReserveDetail();
-                reserveDetail.setPersonId(personEntity);
-                var reserveId = reserveDao.findById(reserve.getId())
-                        .orElseThrow(() -> new BusinessException(UNKNOWN_ERROR));
-                reserveDetail.setReserveId(reserveId);
+                ReserveDetailModel reserveDetailModel = ReserveDetailModel.builder()
+                        .reserveId(reserve.getId())
+                        .personId(prsId)
+                        .build();
+                reserveDetailService.save(reserveDetailModel);
             }
             return reserve.getId();
         } else {
