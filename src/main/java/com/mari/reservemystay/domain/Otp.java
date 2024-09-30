@@ -24,9 +24,8 @@ public class Otp {
     @Column(name = "ip_address")
     private String ipAddress;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_usr")
-    private User userId;
+    @Column(name = "fk_usr")
+    private Long userId;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;

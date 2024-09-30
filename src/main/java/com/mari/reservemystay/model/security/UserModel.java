@@ -14,8 +14,5 @@ public class UserModel {
     private Long id;
     private String username;
     private String password;
-    private Long personId;
-    private Date registerDate;
     private Integer isActive;
-
 }

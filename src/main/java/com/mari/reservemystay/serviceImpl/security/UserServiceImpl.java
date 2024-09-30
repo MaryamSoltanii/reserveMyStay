@@ -1,4 +1,4 @@
-package com.mari.reservemystay.services.security;
+package com.mari.reservemystay.serviceImpl.security;
 
 import com.mari.reservemystay.dao.PersonDao;
 import com.mari.reservemystay.dao.UserDao;
@@ -7,11 +7,13 @@ import com.mari.reservemystay.domain.User;
 import com.mari.reservemystay.exception.BusinessException;
 import com.mari.reservemystay.model.security.UserModel;
 import com.mari.reservemystay.services.general.OtpService;
+import com.mari.reservemystay.services.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 import static com.mari.reservemystay.exception.BusinessException.NOT_VALID_OTP;
@@ -43,17 +45,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long saveUser(UserModel model) {
         var user = new User();
-        var isExistsPerson = personDao.isExistsPerson(model.getUsername());
-        if (isExistsPerson != 0) {
-            Person personId = personDao.findByMobileNo(model.getUsername());
+        Long personId = personDao.findByMobileNo(model.getUsername());
+        if (personId != null) {
             user.setPersonId(personId);
         }
         user.setUsername(model.getUsername());
         user.setPassword(model.getPassword());
         user.setIsActive(model.getIsActive());
-        Instant now = Instant.now();
-        Date currentDate = Date.from(now);
-        user.setRegisterDate(currentDate);
+        user.setRegisterDate(LocalDate.now());
         userDao.save(user);
         return user.getId();
     }
@@ -67,6 +66,7 @@ public class UserServiceImpl implements UserService {
             return isExistsUser(username);
         }
     }
+
     @Override
     public Boolean loginByPassword(String username, String password) {
         var isValidUserPass = userDao.ValidateUserPass(username, password);

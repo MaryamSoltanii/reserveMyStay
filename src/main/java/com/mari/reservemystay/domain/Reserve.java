@@ -19,9 +19,8 @@ public class Reserve {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_rom")
-    private Room roomId;
+    @Column(name = "fk_rom")
+    private Long roomId;
 
     @Column(name = "from_date")
     private Date fromDate;
@@ -43,6 +42,10 @@ public class Reserve {
 
     @Column(name = "code")
     private String code;
+
+    @Column(name = "fk_usr")
+    private Long user;
+
 
     @Override
     public boolean equals(Object o) {

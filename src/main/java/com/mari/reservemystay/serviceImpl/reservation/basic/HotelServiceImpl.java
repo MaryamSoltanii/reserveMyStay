@@ -1,4 +1,4 @@
-package com.mari.reservemystay.services.reservation.basic;
+package com.mari.reservemystay.serviceImpl.reservation.basic;
 
 
 import com.mari.reservemystay.dao.HotelDao;
@@ -7,6 +7,7 @@ import com.mari.reservemystay.domain.Hotel;
 import com.mari.reservemystay.exception.BusinessException;
 import com.mari.reservemystay.model.reservation.basic.HotelModel;
 import com.mari.reservemystay.model.reservation.basic.HotelTuple;
+import com.mari.reservemystay.services.reservation.basic.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

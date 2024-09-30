@@ -1,9 +1,10 @@
-package com.mari.reservemystay.services.basic;
+package com.mari.reservemystay.serviceImpl.basic;
 
 import com.mari.reservemystay.dao.PersonDao;
 import com.mari.reservemystay.domain.Person;
 import com.mari.reservemystay.exception.BusinessException;
 import com.mari.reservemystay.model.basic.PersonModel;
+import com.mari.reservemystay.services.basic.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person findByMobileNo(String mobileNo) {
+    public Long findByMobileNo(String mobileNo) {
         return personDao.findByMobileNo(mobileNo);
     }
 }

@@ -13,6 +13,7 @@
             where r.id = :roomId
         </query>
     </named-native-query>
+
     <named-native-query name="RoomDao.findRoomsByHotelId">
         <query>
             select r.id, htl.name HotelName, r_type.name RoomType, r.capacity, r.price

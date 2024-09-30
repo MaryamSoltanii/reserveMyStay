@@ -1,16 +1,17 @@
-package com.mari.reservemystay.services.general;
+package com.mari.reservemystay.serviceImpl.security;
 
 import com.mari.reservemystay.dao.OtpDao;
 import com.mari.reservemystay.dao.UserDao;
 import com.mari.reservemystay.domain.Otp;
 import com.mari.reservemystay.exception.BusinessException;
+import com.mari.reservemystay.services.general.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Random;
 
 import static com.mari.reservemystay.exception.BusinessException.USR_NOT_ACTIVE;
 
@@ -23,13 +24,11 @@ public class OtpServiceImpl implements OtpService {
     @Autowired
     private UserDao userDao;
 
-    private Integer generateOtp() {
-        return 100000 + new Random().nextInt(100000, 900000);
-    }
+    @Value("${reserve.opt.duration}")
+    private int otpDuration;
 
-    //todo reserve.opt.duration
     private Integer saveOtp(String username, String ipAddress, Boolean isExistsUser) {
-        var otpCode = generateOtp();
+        var otpCode = otpDao.getNewOtp();
         var otp = new Otp();
         otp.setOtp(otpCode);
         otp.setIpAddress(ipAddress);
@@ -37,7 +36,7 @@ public class OtpServiceImpl implements OtpService {
             otp.setUserId(userDao.loadByUsername(username));
         }
         otp.setStartDate(LocalDateTime.now());
-        otp.setEndDate(LocalDateTime.now().plusMinutes(3));
+        otp.setEndDate(LocalDateTime.now().plusMinutes(otpDuration));
         otp.setIsUsed(false);
         otpDao.save(otp);
         return otpCode;

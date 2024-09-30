@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface UserDao extends JpaRepository<User, Long> {
 
     @Query(name = "UserDao.checkExistsUser", nativeQuery = true)
@@ -15,7 +14,7 @@ public interface UserDao extends JpaRepository<User, Long> {
     Long isActiveUser(String username);
 
     @Query("from User u where u.username=?1")
-    User loadByUsername(String username);
+    Long loadByUsername(String username);
 
     @Query(name = "UserDao.validateUserPass", nativeQuery = true)
     Integer ValidateUserPass(String username, String password);

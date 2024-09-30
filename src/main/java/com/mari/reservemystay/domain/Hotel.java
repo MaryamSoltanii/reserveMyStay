@@ -27,7 +27,6 @@ public class Hotel {
     @Column(name = "english_name")
     private String english_name;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_loc")
-    private Location location;
+    @Column(name = "fk_loc")
+    private Long location;
 }

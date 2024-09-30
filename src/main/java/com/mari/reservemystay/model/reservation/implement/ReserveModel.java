@@ -20,4 +20,5 @@ public class ReserveModel {
     private Date reserveDate;
     private Date cancelDate;
     private String code;
+    private Long userId;
 }

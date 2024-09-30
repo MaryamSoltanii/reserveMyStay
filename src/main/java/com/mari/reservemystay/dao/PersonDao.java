@@ -9,7 +9,7 @@ public interface PersonDao extends JpaRepository<Person, Long> {
     @Query(name = "PersonDao.checkPersonIdByMobileNo",nativeQuery = true)
     Integer isExistsPerson(String mobileNo);
     @Query(name = "PersonDao.findPersonIdByMobileNo",nativeQuery = true)
-    Person findByMobileNo(String mobileNo);
+    Long findByMobileNo(String mobileNo);
     @Query(name = "PersonDao.findPersonIdByNationalCode",nativeQuery = true)
     Long findByNationalCode(String NationalCode);
 }

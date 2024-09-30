@@ -12,5 +12,5 @@ public interface PersonService {
 
     Integer isExistsPerson(String mobileNo);
 
-    Person findByMobileNo(String mobileNo);
+    Long findByMobileNo(String mobileNo);
 }

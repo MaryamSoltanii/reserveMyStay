@@ -1,4 +1,4 @@
-package com.mari.reservemystay.services.reservation.basic;
+package com.mari.reservemystay.serviceImpl.basic;
 
 
 import com.mari.reservemystay.dao.CommonDataDao;
@@ -9,6 +9,7 @@ import com.mari.reservemystay.domain.Hotel;
 import com.mari.reservemystay.domain.HotelAttribute;
 import com.mari.reservemystay.exception.BusinessException;
 import com.mari.reservemystay.model.reservation.basic.HotelAttributeModel;
+import com.mari.reservemystay.services.reservation.basic.HotelAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +37,10 @@ public class HotelAttributeServiceImpl implements HotelAttributeService {
         HotelAttribute hotelAttribute = new HotelAttribute();
         hotelAttribute.setEffectiveDate(new java.sql.Date(model.getEffectiveDate().getTime()));
         hotelAttribute.setVoidDate(new java.sql.Date(model.getVoidDate().getTime()));
-        var commonDataId = commonDataDao.findById(model.getCommonDataId()).orElseThrow(() -> new BusinessException("invalid common data"));
+        var commonDataId = commonDataDao.findById(model.getCommonDataId())
+                .orElseThrow(() -> new BusinessException("invalid common data")).getId();
         hotelAttribute.setFk_cod(commonDataId);
-        var hotelId = hotelDao.findById(model.getHotelId()).orElseThrow(() -> new BusinessException(HOA_HTL_NOT_FOUND));
+        var hotelId = hotelDao.findById(model.getHotelId()).orElseThrow(() -> new BusinessException(HOA_HTL_NOT_FOUND)).getId();
         hotelAttribute.setFk_htl(hotelId);
         hotelAttributeDao.save(hotelAttribute);
         return hotelAttribute.getId();

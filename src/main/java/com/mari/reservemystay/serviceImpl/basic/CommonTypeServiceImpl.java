@@ -1,8 +1,9 @@
-package com.mari.reservemystay.services.basic;
+package com.mari.reservemystay.serviceImpl.basic;
 
 import com.mari.reservemystay.dao.CommonTypeDao;
 import com.mari.reservemystay.domain.CommonType;
 import com.mari.reservemystay.model.basic.CommonTypeModel;
+import com.mari.reservemystay.services.basic.CommonTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

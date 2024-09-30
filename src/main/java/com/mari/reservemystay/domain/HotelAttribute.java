@@ -18,13 +18,11 @@ public class HotelAttribute {
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "sequence_hot")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_htl")
-    private Hotel fk_htl;
+    @Column(name = "fk_htl")
+    private Long fk_htl;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_cod")
-    private CommonData fk_cod;
+    @Column(name = "fk_cod")
+    private Long fk_cod;
 
     @Column(name = "effective_date")
     private Date effectiveDate;

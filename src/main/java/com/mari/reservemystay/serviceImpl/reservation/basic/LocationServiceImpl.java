@@ -1,9 +1,10 @@
-package com.mari.reservemystay.services.reservation.basic;
+package com.mari.reservemystay.serviceImpl.reservation.basic;
 
 import com.mari.reservemystay.dao.LocationDao;
 import com.mari.reservemystay.domain.Location;
 import com.mari.reservemystay.model.reservation.basic.LocationModel;
 import com.mari.reservemystay.model.reservation.basic.LocationTuple;
+import com.mari.reservemystay.services.reservation.basic.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

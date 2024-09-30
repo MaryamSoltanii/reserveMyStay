@@ -17,4 +17,17 @@
             ]]>
         </query>
     </named-native-query>
+    <named-native-query name="OptDao.GetOtp">
+        <query>
+            <![CDATA[
+             SELECT rand_val
+             FROM (
+             SELECT 1000000 + (CONVERT(INT, RAND() * 1000000) % 1000000) AS rand_val
+             ) AS subquery
+             WHERE NOT EXISTS (SELECT 1 FROM tb_otp WHERE otp = subquery.rand_val);
+            ]]>
+        </query>
+    </named-native-query>
+
+
 </entity-mappings>

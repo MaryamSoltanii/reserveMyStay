@@ -1,15 +1,14 @@
-package com.mari.reservemystay.services.reservation.basic;
+package com.mari.reservemystay.serviceImpl.reservation.basic;
 
 import com.mari.reservemystay.dao.CommonDataDao;
 import com.mari.reservemystay.dao.HotelDao;
 import com.mari.reservemystay.dao.RoomDao;
-import com.mari.reservemystay.domain.CommonData;
-import com.mari.reservemystay.domain.Hotel;
 import com.mari.reservemystay.domain.Room;
 import com.mari.reservemystay.exception.BusinessException;
 import com.mari.reservemystay.model.reservation.implement.HotelRoomResponse;
 import com.mari.reservemystay.model.reservation.basic.RoomList;
 import com.mari.reservemystay.model.reservation.basic.RoomModel;
+import com.mari.reservemystay.services.reservation.basic.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +35,10 @@ public class RoomServiceImpl implements RoomService {
         room.setEffectiveDate(new java.sql.Date(model.getEffectiveDate().getTime()));
         room.setVoidDate(new java.sql.Date(model.getVoidDate().getTime()));
         room.setDescription(model.getDescription());
-        var hotelId = hotelDao.findById(model.getHotelId()).orElseThrow(() -> new BusinessException("ROM_HTL_NOT_FOUND"));
+        Long hotelId = hotelDao.findById(model.getHotelId());
         room.setHotelId(hotelId);
-        var commonDataId = commonDataDao.findById(model.getCommonData()).orElseThrow(() -> new BusinessException("invalid Common Data Id"));
+        var commonDataId = commonDataDao.findById(model.getCommonData())
+                .orElseThrow(() -> new BusinessException("invalid Common Data Id"));
         room.setCommonData(commonDataId);
         roomDao.save(room);
         return room.getId();

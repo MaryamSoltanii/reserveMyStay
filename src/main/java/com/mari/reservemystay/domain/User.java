@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -23,12 +24,11 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_prs")
-    private Person personId;
+    @Column(name = "fk_prs")
+    protected Long personId;
 
     @Column(name = "register_date")
-    private Date registerDate;
+    private LocalDate registerDate;
 
     @Column(name = "is_active")
     private Integer isActive;

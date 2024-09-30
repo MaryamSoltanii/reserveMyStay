@@ -11,8 +11,8 @@ import java.util.Date;
 @Entity
 @SequenceGenerator(name = "sequence_prs", sequenceName = "sq_person", allocationSize = 1)
 @Table(name = "tb_person")
-
 public class Person {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_prs")
     private long id;

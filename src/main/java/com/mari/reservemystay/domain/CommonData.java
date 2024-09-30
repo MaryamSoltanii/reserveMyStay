@@ -14,9 +14,8 @@ public class CommonData {
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "sequence_cod")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_cot")
-    private CommonType commonType;
+    @Column(name = "fk_cot")
+    private Long commonType;
 
     @Column(name = "code")
     private String code;

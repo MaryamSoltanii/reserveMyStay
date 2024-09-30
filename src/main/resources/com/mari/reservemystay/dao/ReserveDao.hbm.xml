@@ -27,4 +27,27 @@
             where code = :code
         </query>
     </named-native-query>
+
+    <named-native-query name="ReserveDao.reservationList">
+        <query>
+            select res.from_date, res.to_date, htl.name as hotel_name,res.reserve_date
+            from tb_reserve res
+                     join tb_room rom on rom.id = res.fk_rom
+                     join tb_hotel htl on htl.id = rom.fk_htl
+                     join tb_user usr on usr.id = res.fk_usr
+            where usr.id = :userId
+        </query>
+    </named-native-query>
+
+    <named-native-query name="ReserveDao.getUniqueCode">
+        <query>
+            SELECT rand_val
+            FROM (
+            SELECT CAST(NEWID() AS NVARCHAR(36)) AS rand_val
+            ) AS subquery
+            WHERE NOT EXISTS (SELECT 1 FROM tb_reserve WHERE code = subquery.rand_val)
+        </query>
+    </named-native-query>
+
+
 </entity-mappings>

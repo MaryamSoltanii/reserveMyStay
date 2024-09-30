@@ -18,13 +18,11 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_rom")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_htl")
-    private Hotel HotelId;
+    @Column(name = "fk_htl")
+    private Long HotelId;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_cod")
-    private CommonData commonData;
+    @Column(name = "fk_cod")
+    private Long commonData;
 
     @Column(name = "capacity")
     private Long capacity;

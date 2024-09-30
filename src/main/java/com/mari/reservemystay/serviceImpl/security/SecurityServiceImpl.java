@@ -1,5 +1,6 @@
-package com.mari.reservemystay.services.security;
+package com.mari.reservemystay.serviceImpl.security;
 
+import com.mari.reservemystay.services.security.SecurityService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

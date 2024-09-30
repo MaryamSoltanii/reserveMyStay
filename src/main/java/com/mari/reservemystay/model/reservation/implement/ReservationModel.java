@@ -15,6 +15,7 @@ public class ReservationModel {
     private Date fromDate;
     private Date toDate;
     private Date reserveDate;
+    private Long userId;
     private List<Guestslist> guests;
 
     /*   {
