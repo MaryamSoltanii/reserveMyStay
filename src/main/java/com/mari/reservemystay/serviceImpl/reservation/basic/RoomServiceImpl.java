@@ -35,10 +35,10 @@ public class RoomServiceImpl implements RoomService {
         room.setEffectiveDate(new java.sql.Date(model.getEffectiveDate().getTime()));
         room.setVoidDate(new java.sql.Date(model.getVoidDate().getTime()));
         room.setDescription(model.getDescription());
-        Long hotelId = hotelDao.findById(model.getHotelId());
+        Long hotelId = hotelDao.findById(model.getHotelId()).get().getId();
         room.setHotelId(hotelId);
         var commonDataId = commonDataDao.findById(model.getCommonData())
-                .orElseThrow(() -> new BusinessException("invalid Common Data Id"));
+                .orElseThrow(() -> new BusinessException("invalid Common Data Id")).getId();
         room.setCommonData(commonDataId);
         roomDao.save(room);
         return room.getId();
@@ -53,7 +53,7 @@ public class RoomServiceImpl implements RoomService {
         }
         if (!Objects.equals(entity.getCommonData(), model.getCommonData())) {
             var commonData = commonDataDao.findById(model.getCommonData())
-                    .orElseThrow(() -> new BusinessException("Invalid Common Data ID"));
+                    .orElseThrow(() -> new BusinessException("Invalid Common Data ID")).getId();
             entity.setCommonData(commonData);
         }
         if (!Objects.equals(entity.getCapacity(), model.getCapacity())) {

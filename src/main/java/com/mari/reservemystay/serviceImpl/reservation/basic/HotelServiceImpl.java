@@ -42,7 +42,7 @@ public class HotelServiceImpl implements HotelService {
         hotel.setName(model.getName());
         hotel.setCode(model.getCode());
         hotel.setEnglish_name(model.getEnglishName());
-        var locationId = locationDao.findById(model.getLocationId()).orElseThrow(() -> new BusinessException(HTL_LOC_NOT_FOUND));
+        var locationId = locationDao.findById(model.getLocationId()).orElseThrow(() -> new BusinessException(HTL_LOC_NOT_FOUND)).getId();
         hotel.setLocation((locationId));
         hotelDao.save(hotel);
         return hotel.getId();

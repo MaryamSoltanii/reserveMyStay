@@ -41,7 +41,7 @@
 
     <named-native-query name="ReserveDao.getUniqueCode">
         <query>
-            SELECT rand_val
+            SELECT substring(rand_val,1,6) rand_val
             FROM (
             SELECT CAST(NEWID() AS NVARCHAR(36)) AS rand_val
             ) AS subquery

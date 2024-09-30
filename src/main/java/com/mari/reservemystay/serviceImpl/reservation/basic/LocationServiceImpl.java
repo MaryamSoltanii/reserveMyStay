@@ -17,21 +17,7 @@ import java.util.Optional;
 public class LocationServiceImpl implements LocationService {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
     private LocationDao locationDao;
-
-//    @Override
-//    public List<LocationModel> findAll() {
-//        List<LocationModel> response = new ArrayList<>();
-//        var locations = locationDao.findAll();
-//        locations.forEach(var -> response.add(LocationModel.builder()
-//                .id(var.getId())
-//                .name(var.getName())
-//                .build()));
-//        return response;
-//    }
-
 
     @Override
     public Long save(LocationModel model) {
