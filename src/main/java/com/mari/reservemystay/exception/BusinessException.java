@@ -33,5 +33,5 @@ public class BusinessException extends RuntimeException {
     public static final String UNKNOWN_ERROR = "unknown.error";
 
     public static final String USER_IS_NOT_LOGIN = "user.is.not.login";
-
+    public static final String OTP_IS_VALID = "otp.is.valid";
 }
