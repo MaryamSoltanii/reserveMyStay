@@ -12,4 +12,7 @@ public interface OtpDao extends JpaRepository<Otp, Long> {
 
     @Query(name = "OptDao.GetOtp",nativeQuery = true)
     Integer getNewOtp();
+    
+    @Query(name = "OptDao.getEndDate",nativeQuery = true)
+    Date getOtpEndDate(String username, Long ipAddress);
 }
