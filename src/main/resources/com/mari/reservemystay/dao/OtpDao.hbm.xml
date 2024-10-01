@@ -28,6 +28,19 @@
             ]]>
         </query>
     </named-native-query>
-
+  
+    <named-native-query name=" OptDao.getEndDate">
+        <query>
+            <![CDATA[
+            select end_date from (select end_date
+                  from tb_otp
+                  left join tb_user usr on usr.id = o.fk_usr
+                  where (usr.username = :username or :username is null)
+                  and (ip_address = :ipAddress or :ipAddress is null)
+                  order by id desc)
+            where rownum = 1;
+            ]]>
+        </query>
+    </named-native-query>
 
 </entity-mappings>
