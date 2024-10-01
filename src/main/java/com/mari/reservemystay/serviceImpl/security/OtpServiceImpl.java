@@ -28,18 +28,25 @@ public class OtpServiceImpl implements OtpService {
     private int otpDuration;
 
     private Integer saveOtp(String username, String ipAddress, Boolean isExistsUser) {
-        var otpCode = otpDao.getNewOtp();
-        var otp = new Otp();
-        otp.setOtp(otpCode);
-        otp.setIpAddress(ipAddress);
-        if (isExistsUser) {
-            otp.setUserId(userDao.loadByUsername(username));
+        Date lastEndDate = otpDao.getOtpEndDate(username, ipAddress);
+        if (lastEndDate <= (LocalDateTime.now().plusMinutes(otpDuration)))//(sysdate + interval '02' minute)
+        {
+            var otpCode = otpDao.getNewOtp();
+            var otp = new Otp();
+            otp.setOtp(otpCode);
+            otp.setIpAddress(ipAddress);
+            if (isExistsUser) {
+                otp.setUserId(userDao.loadByUsername(username));
+            }
+            otp.setStartDate(LocalDateTime.now());
+            otp.setEndDate(LocalDateTime.now().plusMinutes(otpDuration));
+            otp.setIsUsed(false);
+            otpDao.save(otp);
+            return otpCode;
         }
-        otp.setStartDate(LocalDateTime.now());
-        otp.setEndDate(LocalDateTime.now().plusMinutes(otpDuration));
-        otp.setIsUsed(false);
-        otpDao.save(otp);
-        return otpCode;
+        else{
+            throw new BusinessException(OTP_IS_VALID);
+        }
     }
 
     @Override
