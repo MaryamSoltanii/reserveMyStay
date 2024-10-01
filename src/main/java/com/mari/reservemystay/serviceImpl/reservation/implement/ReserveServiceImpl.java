@@ -86,21 +86,7 @@ public class ReserveServiceImpl implements ReserveService {
             String nationalCode = guestslist.getNationalCode();
             Long personId = personDao.findByNationalCode(nationalCode);
             if (personId == null) {
-                int genderValue;
-                if ("female".equalsIgnoreCase(guestslist.getGender())) {
-                    genderValue = 1;
-                } else {
-                    genderValue = 0;
-                }
-                PersonModel personModel = PersonModel.builder().birthdate(guestslist.getBirthdate())
-                        .firstname(guestslist.getFirstname())
-                        .lastname(guestslist.getLastname())
-                        .mobileNo(guestslist.getMobileNo())
-                        .fatherName(guestslist.getFatherName())
-                        .passportNo(guestslist.getPassportNo())
-                        .nationalCode(nationalCode)
-                        .gender(genderValue).build();
-                personList.add(personService.save(personModel));
+               callPersonSave(personList, guestslist, nationalCode);
             } else {
                 personList.add(personId);
             }
@@ -108,6 +94,23 @@ public class ReserveServiceImpl implements ReserveService {
         return personList;
     }
 
+    private void callPersonSave(List<Long> personList, Guestslist guestslist, String nationalCode) {
+        int genderValue;
+        if ("female".equalsIgnoreCase(guestslist.getGender())) {
+            genderValue = 1;
+        } else {
+            genderValue = 0;
+        }
+        PersonModel personModel = PersonModel.builder().birthdate(guestslist.getBirthdate())
+                .firstname(guestslist.getFirstname())
+                .lastname(guestslist.getLastname())
+                .mobileNo(guestslist.getMobileNo())
+                .fatherName(guestslist.getFatherName())
+                .passportNo(guestslist.getPassportNo())
+                .nationalCode(nationalCode)
+                .gender(genderValue).build();
+        personList.add(personService.save(personModel));
+    }
     private void saveReserveDetail(List<Long> guests, Long reserveId) {
         for (Long guestsList : guests) {
             ReserveDetailModel reserveDetailModel = ReserveDetailModel.builder()
