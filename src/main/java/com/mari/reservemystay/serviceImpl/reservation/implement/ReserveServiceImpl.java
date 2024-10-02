@@ -86,15 +86,14 @@ public class ReserveServiceImpl implements ReserveService {
             String nationalCode = guestslist.getNationalCode();
             Long personId = personDao.findByNationalCode(nationalCode);
             if (personId == null) {
-               callPersonSave(personList, guestslist, nationalCode);
-            } else {
-                personList.add(personId);
+               personId = callPersonSave(personList, guestslist, nationalCode);
             }
+                personList.add(personId);
         }
         return personList;
     }
 
-    private void callPersonSave(List<Long> personList, Guestslist guestslist, String nationalCode) {
+    private Long callPersonSave( Guestslist guestslist) {
         int genderValue;
         if ("female".equalsIgnoreCase(guestslist.getGender())) {
             genderValue = 1;
@@ -107,9 +106,9 @@ public class ReserveServiceImpl implements ReserveService {
                 .mobileNo(guestslist.getMobileNo())
                 .fatherName(guestslist.getFatherName())
                 .passportNo(guestslist.getPassportNo())
-                .nationalCode(nationalCode)
+                .nationalCode(guestslist.getNationalCode)
                 .gender(genderValue).build();
-        personList.add(personService.save(personModel));
+        return personService.save(personModel).getId();
     }
     private void saveReserveDetail(List<Long> guests, Long reserveId) {
         for (Long guestsList : guests) {
